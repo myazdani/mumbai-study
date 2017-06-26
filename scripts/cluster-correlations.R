@@ -1,4 +1,4 @@
-df = read.csv("~/Downloads/clusters-merged-with-indicus-2.csv", header = TRUE, stringsAsFactors = FALSE)
+df = read.csv("~/Documents/IEEE-escience/data/clusters-merged-with-indicus.csv", header = TRUE, stringsAsFactors = FALSE)
 
 library(dplyr)
 
@@ -19,7 +19,14 @@ ggplot(df.agg.m, aes(x = cluster, y = value)) + facet_wrap(~variable, scales = "
 
 ## compute correaltions for columns of interst
 correlations = sapply(df.agg[,grp_cols], 
-                      FUN = function(x) cor(df.agg$cluster, x, method = "spearman"))
+                      FUN = function(x) cor(df.agg$cluster, x, method = "pearson"))
 
+plot(abs(correlations))
 # max correlation (bigger better)
 print(max(abs(correlations)))
+
+# p-val estimate
+
+cor.test(unlist(df.agg[,"cluster"]),
+         unlist(df.agg[,grp_cols[which.max(abs(correlations))]]), 
+         method = "pearson")
