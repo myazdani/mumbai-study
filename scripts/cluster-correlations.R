@@ -19,7 +19,7 @@ ggplot(df.agg.m, aes(x = cluster, y = value)) + facet_wrap(~variable, scales = "
 
 ## compute correaltions for columns of interst
 correlations = sapply(df.agg[,grp_cols], 
-                      FUN = function(x) cor(df.agg$cluster, x, method = "pearson"))
+                      FUN = function(x) cor(df.agg$cluster, x, method = "spearman"))
 
 plot(abs(correlations))
 # max correlation (bigger better)
@@ -29,4 +29,4 @@ print(max(abs(correlations)))
 
 cor.test(unlist(df.agg[,"cluster"]),
          unlist(df.agg[,grp_cols[which.max(abs(correlations))]]), 
-         method = "pearson")
+         method = "spearman")
