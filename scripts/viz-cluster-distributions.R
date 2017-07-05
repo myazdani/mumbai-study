@@ -29,17 +29,34 @@ levels(pg$group)[levels(pg$group)=="trt1"] <- "Treatment 1"
 levels(pg$group)[levels(pg$group)=="trt2"] <- "Treatment 2"
 names(pg)[names(pg)=="group"]  <- "Experimental Condition"
 
-levels(df.m$variable)[levels(df.m$variable)=="mumbai.train"] = "Mumbai Train Set"
-levels(df.m$variable)[levels(df.m$variable)=="mumbai.test"] = "Mumbai Test Set"
-levels(df.m$variable)[levels(df.m$variable)=="not.mumbai"] = "Images outside Mumbai"
-ggplot(df.m, aes(x = as.factor(Var1), y = value, colour = variable)) + 
-  geom_point(size = 2) + xlab("") + ylab("Percentage of images in clusters") + 
+levels(df.m$variable)[levels(df.m$variable)=="mumbai.train"] = "Mumbai train set"
+levels(df.m$variable)[levels(df.m$variable)=="mumbai.test"] = "Mumbai test set"
+levels(df.m$variable)[levels(df.m$variable)=="not.mumbai"] = "Images outside\n Mumbai"
+ggplot(df.m, aes(y = as.factor(Var1), x = 100*value, colour = variable)) + 
+  geom_point(size = 2) + xlab("") + xlab("Percentage of images in clusters") + 
+  ylab("Cluster ID") + 
   theme(legend.title=element_blank(),
-        legend.position = c(0.8, 0.8),
+        legend.position = c(0.8, 0.95),
         legend.text=element_text(size=10),
         axis.text=element_text(size=8),
         axis.title=element_text(size=12))-> p
 
-ggsave("~/Documents/IEEE-escience/results/cluster-distributions.png", plot = p, 
-       width = 8, height = 4)
+ggsave("~/Documents/IEEE-escience/results/50-clusters-distributions.png", plot = p, 
+       width = 4, height = 8)
 
+
+
+### prep top 20 images
+
+mumbai = rbind(mumbai.test, mumbai.train)
+
+mumbai %>% 
+  group_by(cluster) %>%
+  top_n(n = -20, wt = dist) -> mumbai.top
+
+
+mumbai.top %>%
+  group_by(cluster) %>%
+  sample_n(20) -> mumbai.top
+
+write.csv(mumbai.top, file = "~/Documents/IEEE-escience/results/mumbai_clusters_samples.csv", row.names = FALSE, quote = FALSE)
