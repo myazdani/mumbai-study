@@ -1,4 +1,7 @@
-df = read.csv("~/Documents/IEEE-escience/data/clusters-merged-with-indicus.csv", header = TRUE, stringsAsFactors = FALSE)
+df = read.csv("~/Documents/IEEE-escience/data/clusters-merged-with-indicus-2.csv", header = TRUE, stringsAsFactors = FALSE)
+
+df[,c("TOTAL_HOU2_N_19_11", "TOTAL_HOU3_N_19_11", "TOTAL_HOU4_N_19_11", 
+      "TOTAL_HOU5_N_19_11", "TOTAL_HOU6_N_19_11", "TOTAL_HOU7_N_13_11", "TOTAL_HOU8_N_13_11")] = df[,c("TOTAL_HOU2_N_19_11", "TOTAL_HOU3_N_19_11", "TOTAL_HOU4_N_19_11", "TOTAL_HOU5_N_19_11", "TOTAL_HOU6_N_19_11", "TOTAL_HOU7_N_13_11", "TOTAL_HOU8_N_13_11")]/df$TOTAL_HOUS_N_19_11
 
 library(dplyr)
 
